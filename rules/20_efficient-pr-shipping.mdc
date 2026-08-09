@@ -584,10 +584,10 @@ When **`create-pr`** opens a PR on the **hosting repo** (or separate product rep
 
 1. Resolve **`<prBaseBranch>`** from inline **`baseRef`** — strip remote prefix (typically `origin/` → `main`).
 2. **`gh pr create`** **must** include **`--base "<prBaseBranch>" --head "<worktreeName>"`**. **Forbidden:** bare **`gh pr create`** without **`--base`**.
-3. **Pre-create self-check:** When **`gh api repos/<owner>/<repo> --jq .default_branch`** ≠ **`<prBaseBranch>`**, **`--base` is mandatory**.
+3. **Pre-create self-check:** When **`gh api repos/<owner>/<repo> --jq .default_branch`** ≠ **`<prBaseBranch>`**, **`--base` is mandatory** (always safe to pass even when equal).
 4. Executable procedure: [`create-pr/SKILL.md`](../missions/plan-and-deliver/skills/create-pr/SKILL.md) § *`gh pr create` procedure (binding)*.
 
-**Center-repo PRs** (editing **`.sedea/centers/software-development/`** content in the center git repo): rule **20** does **not** apply — use **`development-process.md`** § *Center-repo PR base (binding)* and sedea rule **3** § *Center-repo worktree procedure*.
+**Center-repo PRs** (content in a **center git repository**): rule **20** does **not** apply — use [`.sedea/centers/sedea/rules/3_center.mdc`](.sedea/centers/sedea/rules/3_center.mdc) § *Center-repo worktree procedure* and **`development-process.md`** § *Center-repo PR base (binding)*.
 
 ## Worktree naming
 

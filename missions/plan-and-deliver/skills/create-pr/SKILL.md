@@ -246,9 +246,9 @@ gh pr create \
 
 Body per rule **20** § *Comprehensive PR descriptions*.
 
-4. **Forbidden:** bare **`gh pr create`** without **`--base`** — GitHub repository **`default_branch`** may differ on fork layouts (e.g. `upstream-main` vs registry **`main`**).
+4. **Forbidden:** bare **`gh pr create`** without **`--base`** — GitHub repository **`default_branch`** may differ on fork layouts.
 
-Cross-ref: rule **20** § *Hosting-repo PR base branch (binding)*; center-repo PRs for this center — **`development-process.md`** § *Center-repo PR base (binding)*.
+Cross-ref: rule **20** § *Hosting-repo PR base branch (binding)*. **Center-repo PRs:** [`.sedea/centers/sedea/rules/3_center.mdc`](.sedea/centers/sedea/rules/3_center.mdc) § *Center-repo worktree procedure*; **`development-process.md`** § *Center-repo PR base (binding)*.
 
 ## PR prompt fallback
 

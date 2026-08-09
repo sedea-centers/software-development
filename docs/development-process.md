@@ -75,13 +75,14 @@ Subsections below are **indexes** — load linked rules, skills, or on-demand do
 
 #### Center-repo PR base (binding)
 
-When opening a PR for **software-development center-repo content** (rules, docs, missions, skills under **`.sedea/centers/software-development/`**):
+When opening a PR for **center-repo content** (rules, docs, missions, skills tracked in a **center git repository**):
 
-1. Resolve **`<defaultBranch>`** from **`.sedea/centers/centers.yaml`** for **`software-development`** (typically **`main`**).
-2. **`gh pr create --base "<defaultBranch>" --head "<worktreeName>" …`** — **forbidden:** bare **`gh pr create`** without **`--base`**.
-3. **Fork layout:** On **`sedea-ai/software-development`**, GitHub **`default_branch`** may be **`upstream-main`** while registry **`defaultBranch`** is **`main`**. **`forkCenterLayout.githubDefaultBranch`** is for upstream sync — **not** the content PR merge target.
-4. Platform normative detail: sedea rule **3** § *Center-repo worktree procedure*; mission-maintenance **Center-repo ship cadence** (sedea-builtin-center PR #115 when merged).
-5. After center merge: **`promote-submodule-pin`** on the hosting-repo lane (index row *Center submodule git* above).
+1. Resolve **`<defaultBranch>`** from **`.sedea/centers/centers.yaml`** for the target **`centerSlug`**. **Fail closed** if the registry row is missing.
+2. **Must** pass **`gh pr create --base "<defaultBranch>" --head "<worktreeName>" …`** (plus title/body). **Forbidden:** bare **`gh pr create`** without **`--base`** — GitHub repository **`default_branch`** may differ on fork layouts.
+3. **Pre-create self-check:** When **`gh api repos/<owner>/<repo> --jq .default_branch`** ≠ registry **`<defaultBranch>`**, **`--base` is mandatory** (always safe to pass even when equal).
+4. **Anti-conflation:** **`forkCenterLayout.githubDefaultBranch`** (for example **`upstream-main`**) is for **upstream sync / fork HEAD** — **not** the merge target for feature worktrees branched from registry **`defaultBranch`**.
+5. Platform normative detail: [`.sedea/centers/sedea/rules/3_center.mdc`](.sedea/centers/sedea/rules/3_center.mdc) § *Center-repo worktree procedure*; mission-maintenance **Center-repo ship cadence**.
+6. After center merge on the hosting repo: **`promote-submodule-pin`** inline (index row *Center submodule git* above).
 
 ### Agent glossary — step and section labels
 
