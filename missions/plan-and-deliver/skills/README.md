@@ -89,7 +89,7 @@ Squad Leader §§3/§5 spawn **`author-prd`** / **`master-planner`**; decomposit
 | **`targetPlanPath`** | Anchored plan | Authoritative path |
 | **`parentPlanPath`** | Decomp child | Parent dirname |
 
-Flat: omit **`plansBasePath`**. rule **30**; [`spawn-ship-contracts.md`](../docs/spawn-ship-contracts.md).
+Omit `plansBasePath` for flat root. rule **30**; [`spawn-ship-contracts.md`](../docs/spawn-ship-contracts.md).
 
 ## Ship spawn (detached / coding-session chain)
 
