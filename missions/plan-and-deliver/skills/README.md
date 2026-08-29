@@ -81,45 +81,15 @@ Squad Leader §§3/§5 spawn **`author-prd`** / **`master-planner`**; decomposit
 
 **On-demand:** Full planning spawn table, implementation consent layers, and depth-first notify — [`docs/spawn-ship-contracts.md`](../docs/spawn-ship-contracts.md) § *Planning spawn*.
 
-## Spawn handover inputs (plan-writing chain)
+## Spawn handover inputs
 
-Shared optional spawn **`inputs`** for plan-and-deliver skills that **create or resolve** `.plan.md` files under **`.sedea/operations/.../plans/`**. Spawners copy resolved values into **`mission_control_spawn_agent`** **`inputs`** and inline handoff context tables — **forbidden** re-deriving flat-root paths when nested handover is active.
+| Input | When | Behavior |
+|-------|------|----------|
+| **`plansBasePath`** | Nested folder | Write dir; forward |
+| **`targetPlanPath`** | Anchored plan | Authoritative path |
+| **`parentPlanPath`** | Decomp child | Parent dirname |
 
-| Input | Type | When to pass | Consumer behavior |
-|-------|------|--------------|-------------------|
-| **`plansBasePath`** | Optional absolute path | Parent lane resolved a **nested** dispatch write folder (`plans/YYYY-MM/<dispatch-slug>/`) via **`plan-state resolve-plans-write-dir`** or received explicit handover | Honor as **priority 1** write target; forward on every downstream spawn when JSON **`plansBasePath`** is non-null |
-| **`targetPlanPath`** | Absolute `.plan.md` path | Anchored plan on this lane (existing contract) | Unchanged — authoritative over slug lookup; dirname contributes to resolve fallback |
-| **`parentPlanPath`** | Absolute parent `.plan.md` | Decomposition / indexed-child expand (existing contract) | Unchanged — parent dirname contributes to resolve fallback |
-
-**Omit **`plansBasePath`** when:**
-
-- Dispatch uses the **flat** `plans/` root only (pre-cutover default and explicit flat handover).
-- Resolve JSON returns **`plansBasePath: null`** and **`source: flatPlansRoot`** or **`parentPlanPath`** / **`targetPlanPath`** dirname is the flat root.
-
-**Nested path shape (binding):** absolute directory under **`.sedea/operations/<scope>/plans/YYYY-MM/<dispatch-slug>/`** — validated by **`plan-resolve-plans-write-dir.mjs`**. **Forbidden:** constructing path segments from user-id, **`joint`**, dispatch mtime, or **`ls -lt`** heuristics — see rule **31** § *Plans and docs paths*.
-
-**Resolve helper (binding):** from **`HOSTING_ROOT`**:
-
-```bash
-.sedea/centers/sedea/scripts/run-sedea-node.sh \
-  .sedea/centers/software-development/missions/plan-and-deliver/scripts/plan-state.mjs \
-  resolve-plans-write-dir --json \
-  ${PLANS_BASE_PATH:+--plans-base-path "$PLANS_BASE_PATH"} \
-  ${TARGET_PLAN_PATH:+--target-plan-path "$TARGET_PLAN_PATH"} \
-  ${PARENT_PLAN_PATH:+--parent-plan-path "$PARENT_PLAN_PATH"}
-```
-
-**Resolution priority:** **`plansBasePath`** explicit handover → **`targetPlanPath`** dirname → **`parentPlanPath`** dirname → flat **`plans/`** root. Normative detail: rule **30** § *Plans write path resolution*; implementation: **`plan-resolve-plans-write-dir.mjs`**.
-
-**Skills that honor and propagate (Phase A):**
-
-| Skill | Write | Spawn propagate |
-|-------|-------|-----------------|
-| **`new-plan`**, **`master-planner`**, **`phase-planner`** | Resolve **`writeDir`** before scaffold | Include **`plansBasePath`** in spawn **`inputs`** when JSON non-null |
-| **`delivery-phases`**, **`pr-breakdown`** | Resolve from session **`inputs`** | Inline **`new-plan`** handoff row + standalone spawn **`inputs`** |
-| **`coding-session`** | — (reads anchored plan) | Receives **`targetPlanPath`**; does not author new plan files at spawn |
-
-**Sidecar:** first write under a nested base sets **`plansMonthBucket: YYYY-MM`** on the sidecar (PR 1) — flat-root omits the field.
+Flat: omit **`plansBasePath`**. rule **30**; [`spawn-ship-contracts.md`](../docs/spawn-ship-contracts.md).
 
 ## Ship spawn (detached / coding-session chain)
 
